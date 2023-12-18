@@ -1,0 +1,4 @@
+github.com/bradfitz/http2 v0.0.0-20160116213329-aa7658c0e990 h1:sdI+gcZTNTLDFsME4XQIxGj1jVH73kTBjWMVDIWI7fE=
+github.com/bradfitz/http2 v0.0.0-20160116213329-aa7658c0e990/go.mod h1:LnxXJOZZztMjXWVnF9iY8AOi0kGHs/uH7B+llP/6RMw=
+github.com/julienschmidt/httprouter v1.3.0 h1:U0609e9tgbseu3rBINet9P48AI/D3oJs4dN7jwJOQ1U=
+github.com/julienschmidt/httprouter v1.3.0/go.mod h1:JR6WtHb+2LUe8TCKY3cZOxFyyO8IZAc4RVcycCCAKdM=
