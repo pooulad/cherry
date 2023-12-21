@@ -241,3 +241,9 @@ Gracefull stopping a cherry app is done by sending one of these signals to the p
 You can also force-quit your app by sending it SIGKILL signal
 
 SIGUSR2 signal is not yet implemented. Reloading a new binary by forking the main process is something that wil be implemented when the need for it is there. Feel free to give some feedback on this feature if you think it can provide a bonus to the package.
+
+## Screenshots
+
+![App Screenshot](https://github.com/pooulad/cherry/blob/main/images/test_app.png)
+
+![App Screenshot](https://github.com/pooulad/cherry/blob/main/images/start_app.png)
