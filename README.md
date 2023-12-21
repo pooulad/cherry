@@ -247,3 +247,10 @@ SIGUSR2 signal is not yet implemented. Reloading a new binary by forking the mai
 ![App Screenshot](https://github.com/pooulad/cherry/blob/main/images/test_app.png)
 
 ![App Screenshot](https://github.com/pooulad/cherry/blob/main/images/start_app.png)
+
+
+## Support
+
+If you like Cherry🍒 buy me a coffee☕ or star project🌟
+
+<a href="https://www.coffeebede.com/poulad"><img size="small" class="img-fluid" src="https://coffeebede.ir/DashboardTemplateV2/app-assets/images/banner/default-yellow.svg" /></a>
