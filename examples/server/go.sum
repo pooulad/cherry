@@ -1,0 +1,8 @@
+github.com/bradfitz/http2 v0.0.0-20160116213329-aa7658c0e990 h1:sdI+gcZTNTLDFsME4XQIxGj1jVH73kTBjWMVDIWI7fE=
+github.com/bradfitz/http2 v0.0.0-20160116213329-aa7658c0e990/go.mod h1:LnxXJOZZztMjXWVnF9iY8AOi0kGHs/uH7B+llP/6RMw=
+github.com/julienschmidt/httprouter v1.3.0 h1:U0609e9tgbseu3rBINet9P48AI/D3oJs4dN7jwJOQ1U=
+github.com/julienschmidt/httprouter v1.3.0/go.mod h1:JR6WtHb+2LUe8TCKY3cZOxFyyO8IZAc4RVcycCCAKdM=
+github.com/pooulad/cherry v0.0.0-20231221134925-ff1b6e47aabf h1:5lkjcJhw42FCyAoWTpdAIp+C8qobYiGTVH6wztKTb9M=
+github.com/pooulad/cherry v0.0.0-20231221134925-ff1b6e47aabf/go.mod h1:bLqfh3GzbUcUou9akHK7RJJ6pyA2d5j3JKbeLt2y83E=
+golang.org/x/net v0.19.0 h1:zTwKpTd2XuCqf8huc7Fo2iSy+4RHPd10s4KzeTnVr1c=
+golang.org/x/net v0.19.0/go.mod h1:CfAk/cbD4CthTvqiEl8NpboMuiuOYsAr/7NOjZJtv1U=
