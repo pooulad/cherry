@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net"
 	"net/http"
 	"os"
@@ -14,7 +13,6 @@ import (
 	"time"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/pooulad/cherry/utils"
 )
 
 // errorHandler is the default error handler for cherry.
@@ -88,11 +86,11 @@ func (c *Cherry) serve(s *http.Server, files ...string) error {
 		quit:   make(chan struct{}, 1),
 		fquit:  make(chan struct{}, 1),
 	}
-	banner, err := os.ReadFile("./cli/banner.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Fprint(c.Output, utils.Colorize(utils.ColorRed, string(banner))+"\n")
+	// banner, err := os.ReadFile("./cli/banner.txt")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// fmt.Fprint(c.Output, utils.Colorize(utils.ColorRed, string(banner))+"\n")
 
 	if len(files) == 0 {
 		fmt.Fprintf(c.Output, "Cherry🍒 listening on 0.0.0.0:%s\n", s.Addr)
