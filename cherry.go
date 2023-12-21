@@ -198,7 +198,7 @@ func (c *Cherry) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	}
 	if c.HasAccessLog {
 		start := time.Now()
-		logger := &responseLogger{w: rw}
+		logger := &responseLogger{c: rw}
 		c.router.ServeHTTP(logger, r)
 		c.writeLog(r, start, logger.Status(), logger.Size())
 		// saves an allocation by seperating the whole logger if log is disabled
@@ -222,7 +222,7 @@ func (c *Cherry) makeHttpRouterHandle(h Handler) httprouter.Handle {
 			vars:     params,
 			response: rw,
 			request:  r,
-			cherry: c,
+			cherry:   c,
 		}
 		for _, handler := range c.middleware {
 			if err := handler(ctx); err != nil {
@@ -267,7 +267,7 @@ type Context struct {
 	response http.ResponseWriter
 	request  *http.Request
 	vars     httprouter.Params
-	cherry *Cherry
+	cherry   *Cherry
 }
 
 // Response returns a default http.ResponseWriter
@@ -334,7 +334,7 @@ func (c *Context) Redirect(url string, code int) error {
 }
 
 type responseLogger struct {
-	w      http.ResponseWriter
+	c      http.ResponseWriter
 	status int
 	size   int
 }
@@ -343,17 +343,17 @@ func (l *responseLogger) Write(p []byte) (int, error) {
 	if l.status == 0 {
 		l.status = http.StatusOK
 	}
-	size, err := l.w.Write(p)
+	size, err := l.c.Write(p)
 	l.size += size
 	return size, err
 }
 
 func (l *responseLogger) Header() http.Header {
-	return l.w.Header()
+	return l.c.Header()
 }
 
 func (l *responseLogger) WriteHeader(code int) {
-	l.w.WriteHeader(code)
+	l.c.WriteHeader(code)
 	l.status = code
 }
 
