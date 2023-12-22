@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"path/filepath"
 	"time"
 
 	"github.com/julienschmidt/httprouter"
@@ -88,7 +89,15 @@ func (c *Cherry) serve(s *http.Server, files ...string) error {
 		quit:   make(chan struct{}, 1),
 		fquit:  make(chan struct{}, 1),
 	}
-	banner, err := os.ReadFile("/cli/banner.txt")
+	
+	packagePath, _ := os.Executable()
+    packageDir := filepath.Dir(packagePath)
+    err := os.Chdir(packageDir)
+    if err != nil {
+        return err
+    }
+
+	banner, err := os.ReadFile("./cli/banner.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
