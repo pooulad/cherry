@@ -88,7 +88,7 @@ func (c *Cherry) serve(s *http.Server, files ...string) error {
 		quit:   make(chan struct{}, 1),
 		fquit:  make(chan struct{}, 1),
 	}
-	banner, err := os.ReadFile("./cli/banner.txt")
+	banner, err := os.ReadFile("cli/banner.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
