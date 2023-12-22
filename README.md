@@ -3,8 +3,9 @@
 🚨Cherry🍒 is a web framework for Go language.
 
 ## Installation
+```go
 go get github.com/pooulad/cherry
-
+```
 ## Features
 
 - fast route dispatching backed by httprouter
