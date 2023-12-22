@@ -357,6 +357,18 @@ func TestContextHeader(t *testing.T) {
 	}
 }
 
+func TestTerminal(t *testing.T){
+	c := New()
+	handler := http.HandlerFunc(func(c http.ResponseWriter, r *http.Request) {
+		c.WriteHeader(http.StatusMethodNotAllowed)
+		c.Write([]byte("foo"))
+	})
+	c.SetMethodNotAllowed(handler)
+	c.Get("/", noopHandler)
+
+	c.Serve(3000)	
+}
+
 func isHTTPStatusOK(t *testing.T, code int) {
 	if code != http.StatusOK {
 		t.Errorf("Expecting status 200 got %d", code)
