@@ -8,9 +8,9 @@ go get github.com/pooulad/cherry
 ```
 ## Features
 
-- fast route dispatching backed by httprouter
+- fast route dispatching backed by http-router
 - easy to add middleware handlers
-- subrouting with seperated middleware handlers
+- sub-routing with separated middleware handlers
 - central based error handling
 - build in template engine
 - fast, lightweight and extendable
@@ -93,7 +93,7 @@ friends.Use(middleware3, middleware4)
 Now group friends will have only middleware3 and middleware4 attached.
 
 ## Static files
-Make our assets are accessable trough /assets/styles.css
+Make our assets are accessible trough /assets/styles.css
 
 ```go
 app := cherry.New()
@@ -119,7 +119,7 @@ func myHandler(name string) cherry.Handler{
 ```
 
 ### Returning errors
-Each handler requires an error to be returned. This is personal idiom but it brings some benifits for handling your errors inside request handlers.
+Each handler requires an error to be returned. This is personal idiom but it brings some benefits for handling your errors inside request handlers.
 
 ```go
 func someHandler(ctx *cherry.Context) error {
@@ -154,8 +154,8 @@ app.SetErrorHandler(errHandler)
 ## Context
 Context is a request based object helping you with a series of functions performed against the current request scope.
 
-### Passing values arround middleware functions
-Context provides a context.Context for passing request scoped values arround middleware functions.
+### Passing values around middleware functions
+Context provides a context.Context for passing request scoped values around middleware functions.
 
 Create a new context and pass some values
 
@@ -176,7 +176,7 @@ func someMiddleware2(ctx *cherry.Context) error {
 ```
 
 ### Binding a context
-In some cases you want to intitialize a context from the the main function, like a datastore for example. You can set a context out of a request scope by calling ```BindContext()```.
+In some cases you want to initialize a context from the the main function, like a datastore for example. You can set a context out of a request scope by calling ```BindContext()```.
 
 ```go
 app.BindContext(context.WithValue(context.Background(), "foo", "bar"))
@@ -216,14 +216,14 @@ func login(ctx *cherry.Context) error {
 
 ### Access Log
 
-Cherry provides an access-log in an Apache log format for each incomming request. The access-log is disabled by default, to enable the access-log set ```app.HasAccessLog = true```.
+Cherry provides an access-log in an Apache log format for each incoming request. The access-log is disabled by default, to enable the access-log set ```app.HasAccessLog = true```.
 
 ```
 127.0.0.1 - frank [10/Oct/2000:13:55:36 -0700] "GET /apache_pb.gif HTTP/1.0" 200 2326
 ```
 
 ## Server
-Cherry HTTP server is a wrapper arround the default std HTTP server, the only difference is that it provides a gracefull shutdown. Cherry provides both HTTP and HTTPS (TLS).
+Cherry HTTP server is a wrapper around the default std HTTP server, the only difference is that it provides a graceful shutdown. Cherry provides both HTTP and HTTPS (TLS).
 
 ```go
 app := cherry.New()
@@ -245,9 +245,9 @@ SIGUSR2 signal is not yet implemented. Reloading a new binary by forking the mai
 
 ## Screenshots
 
-![App Screenshot](https://github.com/pooulad/cherry/blob/main/images/test_app.png)
+![App Screenshot](https://github.com/pooulad/cherry/blob/main/assets/images/test_app.png)
 
-![App Screenshot](https://github.com/pooulad/cherry/blob/main/images/start_app.png)
+![App Screenshot](https://github.com/pooulad/cherry/blob/main/asstes/images/start_app.png)
 
 
 ## Support

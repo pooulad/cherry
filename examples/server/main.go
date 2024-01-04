@@ -60,7 +60,7 @@ func dbContextHandler(ctx *cherry.Context) error {
 	return nil
 }
 
-// Only the powerfull have access to the admin routes
+// Only the powerfull have access to the admin routes.
 func authenticate(ctx *cherry.Context) error {
 	admins := []string{"toby", "master iy", "c.froome"}
 	name := ctx.Param("name")
@@ -73,7 +73,7 @@ func authenticate(ctx *cherry.Context) error {
 	return errors.New("access forbidden")
 }
 
-// context helper function to stay lean and mean in your handlers
+// context helper function to stay lean and mean in your handlers.
 func datastoreFromContext(ctx context.Context) *datastore {
 	return ctx.Value("datastore").(*datastore)
 }
@@ -92,7 +92,7 @@ func adminGreetingHandler(ctx *cherry.Context) error {
 	return ctx.Text(http.StatusOK, greeting)
 }
 
-// custom centralized error handling
+// custom centralized error handling.
 func errorHandler(ctx *cherry.Context, err error) {
 	http.Error(ctx.Response(), "Hey some error occured: "+err.Error(), http.StatusInternalServerError)
 }

@@ -357,7 +357,7 @@ func TestContextHeader(t *testing.T) {
 	}
 }
 
-func TestTerminal(t *testing.T){
+func TestTerminal(t *testing.T) {
 	c := New()
 	handler := http.HandlerFunc(func(c http.ResponseWriter, r *http.Request) {
 		c.WriteHeader(http.StatusMethodNotAllowed)
@@ -366,7 +366,7 @@ func TestTerminal(t *testing.T){
 	c.SetMethodNotAllowed(handler)
 	c.Get("/", noopHandler)
 
-	c.Serve(3000)	
+	c.Serve(3000)
 }
 
 func isHTTPStatusOK(t *testing.T, code int) {
