@@ -2,11 +2,11 @@ package cherry
 
 import (
 	"context"
+	_ "embed"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net"
 	"net/http"
 	"os"
@@ -18,6 +18,9 @@ import (
 	"github.com/pooulad/cherry/utils"
 )
 
+//go:embed assets/banner.txt
+var banner []byte
+
 // errorHandler is the default error handler for cherry.
 var errorHandler = func(ctx *Context, err error) {
 	http.Error(ctx.Response(), err.Error(), http.StatusInternalServerError)
@@ -26,17 +29,17 @@ var errorHandler = func(ctx *Context, err error) {
 // ErrorHandlerFunc used for centralize error handling when an error happens in Handler.
 type ErrorHandlerFunc func(ctx *Context, err error)
 
-// Handler is a cherry idiom for handling http.Requests
+// Handler is a cherry idiom for handling http.Requests.
 type Handler func(ctx *Context) error
 
-// Cherry is a web freamework for making fast and simple
+// Cherry is a web framework for making fast and simple
 // web applications in the Go programming language.
 // Cherry supports by one of the fastest request router in Golang.
-// It is also provides a gracefull web server that can serve TLS encripted requests aswell.
+// It is also provides a graceful web server that can serve TLS encrypted requests as well.
 type Cherry struct {
 	ErrorHandler ErrorHandlerFunc
 
-	// Output writes the access-log and debug parameters for webserver
+	// Output writes the access-log and debug parameters for web-server
 	Output io.Writer
 
 	// HasAccessLog enables access-log for cherry. The default is false
@@ -51,7 +54,7 @@ type Cherry struct {
 	context    context.Context
 }
 
-// New returns a new Cherry object
+// New returns a new Cherry object.
 func New() *Cherry {
 	return &Cherry{
 		router:       httprouter.New(),
@@ -61,13 +64,13 @@ func New() *Cherry {
 	}
 }
 
-// Serve method serves the cherry web server on the given port
+// Serve method serves the cherry web server on the given port.
 func (c *Cherry) Serve(port int) error {
 	srv := newServer(fmt.Sprintf(":%d", port), c, c.HTTP2)
 	return c.serve(srv)
 }
 
-// ServeTLS method serves the application one the given port with TLS encription.
+// ServeTLS method serves the application one the given port with TLS encryption.
 func (c *Cherry) ServeTLS(port int, certFile, keyFile string) error {
 	srv := newServer(fmt.Sprintf(":%d", port), c, c.HTTP2)
 	return c.serve(srv, certFile, keyFile)
@@ -78,7 +81,7 @@ func (c *Cherry) ServeCustom(s *http.Server) error {
 	return c.serve(s)
 }
 
-// ServeCustomTLS method serves the application with TLS encription and custom server configuration.
+// ServeCustomTLS method serves the application with TLS encryption and custom server configuration.
 func (c *Cherry) ServeCustomTLS(s *http.Server, certFile, keyFile string) error {
 	return c.serve(s, certFile, keyFile)
 }
@@ -89,18 +92,14 @@ func (c *Cherry) serve(s *http.Server, files ...string) error {
 		quit:   make(chan struct{}, 1),
 		fquit:  make(chan struct{}, 1),
 	}
-	
-	packagePath, _ := os.Executable()
-    packageDir := filepath.Dir(packagePath)
-    err := os.Chdir(packageDir)
-    if err != nil {
-        return err
-    }
 
-	banner, err := os.ReadFile("./cli/banner.txt")
+	packagePath, _ := os.Executable()
+	packageDir := filepath.Dir(packagePath)
+	err := os.Chdir(packageDir)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
+
 	fmt.Fprint(c.Output, utils.Colorize(utils.ColorRed, string(banner))+"\n")
 
 	if len(files) == 0 {
@@ -115,44 +114,44 @@ func (c *Cherry) serve(s *http.Server, files ...string) error {
 }
 
 // Handle adapts the usage of an http.Handler and will be invoked when
-// the router matches the prefix and request method
+// the router matches the prefix and request method.
 func (c *Cherry) Handle(method, path string, h http.Handler) {
 	c.router.Handler(method, path, h)
 }
 
-// Get invokes when request method in handler is set to GET
+// Get invokes when request method in handler is set to GET.
 func (c *Cherry) Get(route string, h Handler) {
 	c.add("GET", route, h)
 }
 
-// Post invokes when request method in handler is set to POST
+// Post invokes when request method in handler is set to POST.
 func (c *Cherry) Post(route string, h Handler) {
 	c.add("POST", route, h)
 }
 
-// Put invokes when request method in handler is set to PUT
+// Put invokes when request method in handler is set to PUT.
 func (c *Cherry) Put(route string, h Handler) {
 	c.add("PUT", route, h)
 }
 
-// Delete invokes when request method in handler is set to DELETE
+// Delete invokes when request method in handler is set to DELETE.
 func (c *Cherry) Delete(route string, h Handler) {
 	c.add("DELETE", route, h)
 }
 
-// Head invokes when request method in handler is set to HEAD
+// Head invokes when request method in handler is set to HEAD.
 func (c *Cherry) Head(route string, h Handler) {
 	c.add("HEAD", route, h)
 }
 
-// Options invokes when request method in handler is set to OPTIONS
+// Options invokes when request method in handler is set to OPTIONS.
 func (c *Cherry) Options(route string, h Handler) {
 	c.add("OPTIONS", route, h)
 }
 
 // Static registers the prefix to the router and start to act as a fileserver
 //
-// app.Static("/public", "./assets")
+// app.Static("/public", "./assets").
 func (c *Cherry) Static(prefix, dir string) {
 	c.router.ServeFiles(path.Join(prefix, "*filepath"), http.Dir(dir))
 }
@@ -160,31 +159,31 @@ func (c *Cherry) Static(prefix, dir string) {
 // BindContext lets you provide a context that will live a full http roundtrip
 // BindContext is mostly used in a func main() to provide init variables that
 // may be created only once, like a database connection. If BindContext is not
-// called, Cherry will use a context.Background()
+// called, Cherry will use a context.Background().
 func (c *Cherry) BindContext(ctx context.Context) {
 	c.context = ctx
 }
 
 // Use appends a Handler to the middleware. Different middleware can be set
-// for each subrouter.
+// for each sub-router.
 func (c *Cherry) Use(handlers ...Handler) {
 	c.middleware = append(c.middleware, handlers...)
 }
 
 // Group returns a new Group that will inherit all of its parents middleware.
-// you can reset the middleware registered to the group by calling Reset()
+// you can reset the middleware registered to the group by calling Reset().
 func (c *Cherry) Group(prefix string) *Group {
 	g := &Group{*c}
 	g.Cherry.prefix += prefix
 	return g
 }
 
-// Group act as a subrouter and wil inherit all of its parents middleware
+// Group act as a sub-router and wil inherit all of its parents middleware.
 type Group struct {
 	Cherry
 }
 
-// Reset clears all middleware
+// Reset clears all middleware.
 func (g *Group) Reset() *Group {
 	g.Cherry.middleware = nil
 	return g
@@ -208,7 +207,7 @@ func (c *Cherry) SetErrorHandler(h ErrorHandlerFunc) {
 	c.ErrorHandler = h
 }
 
-// ServeHTTP satisfies the http.Handler interface
+// ServeHTTP satisfies the http.Handler interface.
 func (c *Cherry) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if rw != nil {
 		rw.Header().Set("Server", "Cherry🍒/1.0")
@@ -218,7 +217,7 @@ func (c *Cherry) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		logger := &responseLogger{c: rw}
 		c.router.ServeHTTP(logger, r)
 		c.writeLog(r, start, logger.Status(), logger.Size())
-		// saves an allocation by seperating the whole logger if log is disabled
+		// saves an allocation by separating the whole logger if log is disabled
 	} else {
 		c.router.ServeHTTP(rw, r)
 	}
@@ -287,12 +286,12 @@ type Context struct {
 	cherry   *Cherry
 }
 
-// Response returns a default http.ResponseWriter
+// Response returns a default http.ResponseWriter.
 func (c *Context) Response() http.ResponseWriter {
 	return c.response
 }
 
-// Request returns a default http.Request ptr
+// Request returns a default http.Request ptr.
 func (c *Context) Request() *http.Request {
 	return c.request
 }
@@ -305,7 +304,7 @@ func (c *Context) JSON(code int, v interface{}) error {
 	return json.NewEncoder(c.Response()).Encode(v)
 }
 
-// Text is a helper function for writing a text/plain string to the ResponseWriter
+// Text is a helper function for writing a text/plain string to the ResponseWriter.
 func (c *Context) Text(code int, text string) error {
 	c.Response().Header().Set("Content-Type", "text/plain")
 	c.Response().WriteHeader(code)
@@ -320,23 +319,23 @@ func (c *Context) DecodeJSON(v interface{}) error {
 }
 
 // Param returns the url named parameter given in the route prefix by its name
-// app.Get("/:name", ..) => ctx.Param("name")
+// app.Get("/:name", ..) => ctx.Param("name").
 func (c *Context) Param(name string) string {
 	return c.vars.ByName(name)
 }
 
 // Query returns the url query parameter by its name.
-// app.Get("/api?limit=25", ..) => ctx.Query("limit")
+// app.Get("/api?limit=25", ..) => ctx.Query("limit").
 func (c *Context) Query(name string) string {
 	return c.request.URL.Query().Get(name)
 }
 
-// Form returns the form parameter by its name
+// Form returns the form parameter by its name.
 func (c *Context) Form(name string) string {
 	return c.request.FormValue(name)
 }
 
-// Header returns the request header by name
+// Header returns the request header by name.
 func (c *Context) Header(name string) string {
 	return c.request.Header.Get(name)
 }

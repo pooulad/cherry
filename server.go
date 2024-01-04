@@ -110,7 +110,6 @@ func (s *server) closeNotify(l net.Listener) {
 	signal.Notify(
 		sig,
 		syscall.SIGTERM,
-		syscall.SIGKILL,
 		syscall.SIGQUIT,
 		syscall.SIGUSR2,
 		syscall.SIGINT,
